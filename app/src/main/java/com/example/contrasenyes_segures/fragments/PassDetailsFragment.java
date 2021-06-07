@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +23,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Base64;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,7 +38,8 @@ public class PassDetailsFragment extends Fragment {
     private TextView password;
     private TextView date;
     private FloatingActionButton fab;
-    private Button speech;
+    private ImageView speechView;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public View onCreateView(
@@ -53,7 +53,7 @@ public class PassDetailsFragment extends Fragment {
         password = (TextView) view.findViewById(R.id.textViewDetailsPassword);
         date = (TextView) view.findViewById(R.id.textViewDetailsDate);
         fab = (FloatingActionButton) view.findViewById(R.id.fab_detail2list);
-        speech = (Button) view.findViewById(R.id.speech);
+        speechView = (ImageView) view.findViewById(R.id.speechView);
 
         return view;
     }
@@ -81,7 +81,7 @@ public class PassDetailsFragment extends Fragment {
             }
         }).start();
 
-        speech.setOnClickListener(new View.OnClickListener() {
+        speechView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OkHttpClient client = new OkHttpClient().newBuilder()
@@ -104,13 +104,15 @@ public class PassDetailsFragment extends Fragment {
                   public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                       if (response.isSuccessful()) {
                           String speech64 = response.body().string();
-                          reproduceAudio(speech64);
-
-                          /*v.post(new Runnable() { TODO: add change pause and play button
-                              @Override
-                              public void run() {
-                              }
-                          });*/
+                          mediaPlayer = new MediaPlayer();
+                          if (!mediaPlayer.isPlaying()) {
+                              speechView.setImageResource(android.R.drawable.ic_media_pause);
+                              reproduceAudio(speech64);
+                          } else {
+                              mediaPlayer.stop();
+                              mediaPlayer.release();
+                              speechView.setImageResource(android.R.drawable.ic_media_play);
+                          }
                       }
                   }
                     });
@@ -128,7 +130,6 @@ public class PassDetailsFragment extends Fragment {
     public void reproduceAudio(String speech64) {
         try{
             String url = "data:audio/mp3;base64,"+speech64;
-            MediaPlayer mediaPlayer = new MediaPlayer();
 
             try {
                 mediaPlayer.setDataSource(url);
@@ -157,6 +158,7 @@ public class PassDetailsFragment extends Fragment {
                 public void onCompletion(MediaPlayer mp) {
                     mp.stop();
                     mp.release();
+                    speechView.setImageResource(android.R.drawable.ic_media_play);
                 }
             });
         }

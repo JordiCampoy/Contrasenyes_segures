@@ -55,8 +55,8 @@ public class Login extends AppCompatActivity {
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for my app")
-                .setSubtitle("Log in using your biometric credential")
+                .setTitle("Biometric login")
+                .setSubtitle("Please log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
 
