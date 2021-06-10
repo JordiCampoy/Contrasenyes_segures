@@ -1,5 +1,6 @@
 package com.example.contrasenyes_segures;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.contrasenyes_segures.database.PassDB;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
     }
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

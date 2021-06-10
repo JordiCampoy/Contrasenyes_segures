@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Contrasenyes Segures</string>
+    <string name="action_settings">Configuració</string>
+    <string name="next">Següent</string>
+    <string name="previous">Tornar</string>
+    <string name="save">Guardar</string>
+    <string name="nameForm">Identificació a l\'App:</string>
+    <string name="name">Nom</string>
+    <string name="passwordForm">Contrasenya:</string>
+    <string name="usernameForm">Nom d\'usuari:</string>
+    <string name="username">Nom</string>
+    <string name="setOnDate">Establert en:</string>
+    <string name="select_language">Escollir idioma</string>
+    <string name="language">Idioma:</string>
+    <string name="choose_language">Seleccionar idioma...</string>
+</resources>
