@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public interface PasswordDAO {
 
     @Insert
     void insertPass(Password password);
+
+    @Update
+    void updatePass(Password password);
 
     @Delete
     void delete(Password password);

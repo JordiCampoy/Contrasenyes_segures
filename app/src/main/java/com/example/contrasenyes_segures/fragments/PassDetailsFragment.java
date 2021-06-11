@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ public class PassDetailsFragment extends Fragment {
     private TextView username;
     private TextView password;
     private TextView date;
+    private Button edit_but;
+    private Button del_but;
     private FloatingActionButton fab;
     private ImageView speechView;
     private MediaPlayer mediaPlayer;
@@ -54,6 +57,8 @@ public class PassDetailsFragment extends Fragment {
         date = (TextView) view.findViewById(R.id.textViewDetailsDate);
         fab = (FloatingActionButton) view.findViewById(R.id.fab_detail2list);
         speechView = (ImageView) view.findViewById(R.id.speechView);
+        edit_but = (Button) view.findViewById(R.id.edit_pass_button);
+        del_but = (Button) view.findViewById(R.id.del_pass_button);
 
         return view;
     }
@@ -74,6 +79,9 @@ public class PassDetailsFragment extends Fragment {
                             pass_txt = AESCrypt.decrypt(pass.password_text);
                             password.setText(pass_txt);
                         } catch (Exception e) {
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.failedToRetrievePass), Toast.LENGTH_SHORT)
+                                    .show();
                         }
                         date.setText(pass.setup_date);
                     }
@@ -119,14 +127,51 @@ public class PassDetailsFragment extends Fragment {
                 }
             });
 
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        NavHostFragment.findNavController(PassDetailsFragment.this)
-                                .navigate(R.id.action_ThirdFragment_to_FirstFragment);
-                    }
-                });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(PassDetailsFragment.this)
+                        .navigate(R.id.action_ThirdFragment_to_FirstFragment);
             }
+        });
+
+        del_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PassDB db = Room.databaseBuilder(getActivity(), PassDB.class, "PassDB").build();
+                new Thread(new Runnable() {
+                    public void run() {
+                        Password pass = db.passwordDAO().getPass(getArguments().getInt("pass_id"));
+                        db.passwordDAO().delete(pass);
+                        view.post(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getActivity(),
+                                        getResources().getString(R.string.successful_delete), Toast.LENGTH_SHORT)
+                                        .show();
+                                NavHostFragment.findNavController(PassDetailsFragment.this)
+                                        .navigate(R.id.action_ThirdFragment_to_FirstFragment);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+
+        edit_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    public void run() {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("edit", getArguments().getInt("pass_id"));
+                        NavHostFragment.findNavController(PassDetailsFragment.this)
+                                .navigate(R.id.action_ThirdFragment_to_SecondFragment, bundle);
+                    }
+                }).start();
+            }
+        });
+    }
+
     public void reproduceAudio(String speech64) {
         try{
             String url = "data:audio/mp3;base64,"+speech64;

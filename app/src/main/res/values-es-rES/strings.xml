@@ -14,4 +14,12 @@
     <string name="select_language">Escoger idioma</string>
     <string name="language">Idioma:</string>
     <string name="choose_language">Seleccionar idioma...</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="successful_delete">Contraseña eliminada correctamente</string>
+    <string name="correctCreation">Creación exitosa</string>
+    <string name="incorrectCreation">Creación fallida</string>
+    <string name="correctEdit">Edición exitosa</string>
+    <string name="incorrectEdit">Fallo al realizar la edición</string>
+    <string name="failedToRetrievePass">Fallo al recuperar la contraseña</string>
 </resources>
