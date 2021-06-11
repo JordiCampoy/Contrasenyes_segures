@@ -1,5 +1,8 @@
 package com.example.contrasenyes_segures.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,6 +45,7 @@ public class PassDetailsFragment extends Fragment {
     private Button del_but;
     private FloatingActionButton fab;
     private ImageView speechView;
+    private ImageView copyClipView;
     private MediaPlayer mediaPlayer;
 
     @Override
@@ -57,6 +61,7 @@ public class PassDetailsFragment extends Fragment {
         date = (TextView) view.findViewById(R.id.textViewDetailsDate);
         fab = (FloatingActionButton) view.findViewById(R.id.fab_detail2list);
         speechView = (ImageView) view.findViewById(R.id.speechView);
+        copyClipView = (ImageView) view.findViewById(R.id.copyClipView);
         edit_but = (Button) view.findViewById(R.id.edit_pass_button);
         del_but = (Button) view.findViewById(R.id.del_pass_button);
 
@@ -126,6 +131,18 @@ public class PassDetailsFragment extends Fragment {
                     });
                 }
             });
+
+        copyClipView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("pass", password.getText().toString());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getActivity(),
+                        getResources().getString(R.string.copyClipboard), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

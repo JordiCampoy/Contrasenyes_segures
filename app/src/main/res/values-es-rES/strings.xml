@@ -24,4 +24,5 @@
     <string name="failedToRetrievePass">Fallo al recuperar la contraseña</string>
     <string name="emptyName">Identificación no puede estar vacío</string>
     <string name="passTooShort">Contraseña debe tener al menos 5 caracteres</string>
+    <string name="copyClipboard">Copiado al portapapeles</string>
 </resources>
