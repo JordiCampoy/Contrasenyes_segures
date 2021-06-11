@@ -30,4 +30,6 @@
     <string name="correctEdit">Successful edit</string>
     <string name="incorrectEdit">Edit failed</string>
     <string name="failedToRetrievePass">Failed to retrieve password data</string>
+    <string name="emptyName">Identifier can\'t be empty</string>
+    <string name="passTooShort">Password must have at least 5 characters</string>
 </resources>

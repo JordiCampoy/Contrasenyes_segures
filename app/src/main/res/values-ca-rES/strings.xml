@@ -22,4 +22,6 @@
     <string name="correctEdit">Edició exitosa</string>
     <string name="incorrectEdit">Edició fallida</string>
     <string name="failedToRetrievePass">Obtenció de la contrasenya fallida</string>
+    <string name="emptyName">Identificador no pot ser buit</string>
+    <string name="passTooShort">Contrasenya ha de tenir almenys 5 caracters</string>
 </resources>

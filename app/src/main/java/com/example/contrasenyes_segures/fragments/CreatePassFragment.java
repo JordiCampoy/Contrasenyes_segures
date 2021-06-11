@@ -56,37 +56,47 @@ public class CreatePassFragment extends Fragment {
                     String username = usernameField.getText().toString();
                     String password = passwordField.getText().toString();
 
-
-                    PassDB db = Room.databaseBuilder(getActivity(), PassDB.class, "PassDB").build();
-
-                    Password pass = new Password();
-                    pass.nameOfStoredPass = name;
-                    pass.username = username;
-                    Date date = Calendar.getInstance().getTime();
-                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    pass.setup_date = dateFormat.format(date);
-
-
-                    try {
-                        password = AESCrypt.encrypt(password);
-                        pass.password_text = password;
-                        new Thread(new Runnable() {
-                            public void run() {
-                                db.passwordDAO().insertPass(pass);
-                            }
-                        }).start();
+                    if (name.length()<1) {
                         Toast.makeText(getActivity(),
-                                getResources().getString(R.string.correctCreation), Toast.LENGTH_SHORT)
+                                getResources().getString(R.string.emptyName), Toast.LENGTH_SHORT)
                                 .show();
-                    } catch (Exception e) {
+                    } else if (password.length()<5) {
                         Toast.makeText(getActivity(),
-                                getResources().getString(R.string.incorrectCreation), Toast.LENGTH_SHORT)
+                                getResources().getString(R.string.passTooShort), Toast.LENGTH_SHORT)
                                 .show();
+                    } else {
+
+                        PassDB db = Room.databaseBuilder(getActivity(), PassDB.class, "PassDB").build();
+
+                        Password pass = new Password();
+                        pass.nameOfStoredPass = name;
+                        pass.username = username;
+                        Date date = Calendar.getInstance().getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        pass.setup_date = dateFormat.format(date);
+
+
+                        try {
+                            password = AESCrypt.encrypt(password);
+                            pass.password_text = password;
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    db.passwordDAO().insertPass(pass);
+                                }
+                            }).start();
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.correctCreation), Toast.LENGTH_SHORT)
+                                    .show();
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.incorrectCreation), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+
+                        NavHostFragment.findNavController(CreatePassFragment.this)
+                                .navigate(R.id.action_SecondFragment_to_FirstFragment);
                     }
-
-
-                    NavHostFragment.findNavController(CreatePassFragment.this)
-                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
                 }
             });
         } else {
@@ -122,37 +132,46 @@ public class CreatePassFragment extends Fragment {
                     String username = usernameField.getText().toString();
                     String password = passwordField.getText().toString();
 
-
-                    PassDB db = Room.databaseBuilder(getActivity(), PassDB.class, "PassDB").build();
-
-                    try {
-                        final String passwordEnc = AESCrypt.encrypt(password);
-
-                        new Thread(new Runnable() {
-                            public void run() {
-                                Password pass = db.passwordDAO().getPass(getArguments().getInt("edit"));
-
-                                pass.nameOfStoredPass = name;
-                                pass.username = username;
-                                Date date = Calendar.getInstance().getTime();
-                                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                pass.setup_date = dateFormat.format(date);
-                                pass.password_text = passwordEnc;
-
-                                db.passwordDAO().updatePass(pass);
-                            }
-                        }).start();
+                    if (name.length()<1) {
                         Toast.makeText(getActivity(),
-                                getResources().getString(R.string.correctEdit), Toast.LENGTH_SHORT)
+                                getResources().getString(R.string.emptyName), Toast.LENGTH_SHORT)
                                 .show();
-                    } catch (Exception e) {
+                    } else if (password.length()<5) {
                         Toast.makeText(getActivity(),
-                                getResources().getString(R.string.incorrectEdit), Toast.LENGTH_SHORT)
+                                getResources().getString(R.string.passTooShort), Toast.LENGTH_SHORT)
                                 .show();
+                    } else {
+                        PassDB db = Room.databaseBuilder(getActivity(), PassDB.class, "PassDB").build();
+
+                        try {
+                            final String passwordEnc = AESCrypt.encrypt(password);
+
+                            new Thread(new Runnable() {
+                                public void run() {
+                                    Password pass = db.passwordDAO().getPass(getArguments().getInt("edit"));
+
+                                    pass.nameOfStoredPass = name;
+                                    pass.username = username;
+                                    Date date = Calendar.getInstance().getTime();
+                                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                    pass.setup_date = dateFormat.format(date);
+                                    pass.password_text = passwordEnc;
+
+                                    db.passwordDAO().updatePass(pass);
+                                }
+                            }).start();
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.correctEdit), Toast.LENGTH_SHORT)
+                                    .show();
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.incorrectEdit), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        NavHostFragment.findNavController(CreatePassFragment.this)
+                                .navigate(R.id.action_SecondFragment_to_FirstFragment);
                     }
-
-                    NavHostFragment.findNavController(CreatePassFragment.this)
-                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
                 }
             });
         }
