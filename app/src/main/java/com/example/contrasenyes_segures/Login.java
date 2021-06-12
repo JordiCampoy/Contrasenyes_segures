@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(getApplicationContext(),
-                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                        getResources().getString(R.string.authError) + errString, Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                        getResources().getString(R.string.authSucceed), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Login.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -60,16 +60,16 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Authentication failed",
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.authFailed),
                         Toast.LENGTH_SHORT)
                         .show();
             }
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login")
-                .setSubtitle("Please log in using your biometric credential")
-                .setNegativeButtonText("Use account password")
+                .setTitle(getResources().getString(R.string.bioLogin))
+                .setSubtitle(getResources().getString(R.string.bioLoginText))
+                .setNegativeButtonText(getResources().getString(R.string.cancel))
                 .build();
 
         // Prompt appears when user clicks "Log in".

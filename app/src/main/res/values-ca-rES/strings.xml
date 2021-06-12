@@ -25,4 +25,11 @@
     <string name="emptyName">Identificador no pot ser buit</string>
     <string name="passTooShort">Contrasenya ha de tenir almenys 5 caracters</string>
     <string name="copyClipboard">"Copiat al porta-retalls "</string>
+    <string name="bioLoginText">"Inicieu la sessió amb la vostra credencial biomètrica "</string>
+    <string name="bioLogin">Login biomètric</string>
+    <string name="authSucceed">Autenticació exitosa</string>
+    <string name="authFailed">Autenticació fallida</string>
+    <string name="authError">"Error d'autentificació: "</string>
+    <string name="login">Iniciar sessió</string>
+    <string name="cancel">Cancel·lar</string>
 </resources>

@@ -33,4 +33,11 @@
     <string name="emptyName">Identifier can\'t be empty</string>
     <string name="passTooShort">Password must have at least 5 characters</string>
     <string name="copyClipboard">Copied to clipboard</string>
+    <string name="authFailed">Authentication failed</string>
+    <string name="authSucceed">Authentication succeeded</string>
+    <string name="bioLogin">Biometric login</string>
+    <string name="bioLoginText">Please log in using your biometric credential</string>
+    <string name="authError">Authentication error:</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
 </resources>

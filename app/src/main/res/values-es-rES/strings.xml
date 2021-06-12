@@ -25,4 +25,11 @@
     <string name="emptyName">Identificación no puede estar vacío</string>
     <string name="passTooShort">Contraseña debe tener al menos 5 caracteres</string>
     <string name="copyClipboard">Copiado al portapapeles</string>
+    <string name="bioLoginText">"Inicie sesión con su credencial biométrica "</string>
+    <string name="bioLogin">Login biométrico</string>
+    <string name="authSucceed">Autenticación exitosa</string>
+    <string name="authFailed">Autenticación fallida</string>
+    <string name="authError">"Error de autenticación: "</string>
+    <string name="login">Iniciar sessión</string>
+    <string name="cancel">Cancelar</string>
 </resources>
