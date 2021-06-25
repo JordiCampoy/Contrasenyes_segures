@@ -1,8 +1,10 @@
 package com.example.contrasenyes_segures.fragments;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -94,43 +96,63 @@ public class PassDetailsFragment extends Fragment {
             }
         }).start();
 
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        OkHttpClient client = new OkHttpClient().newBuilder()
+                                .build();
+                        RequestBody body = RequestBody.create(("{'text': '" + password.getText().toString() + "'}").getBytes());
+                        Request request = new Request.Builder()
+                                .url("https://europe-west2-sylvan-triumph-314611.cloudfunctions.net/text2Speech")
+                                .addHeader("Content-Type", "application/json")
+                                .method("POST", body)
+                                .build();
+
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                if (response.isSuccessful()) {
+                                    String speech64 = response.body().string();
+                                    mediaPlayer = new MediaPlayer();
+                                    if (!mediaPlayer.isPlaying()) {
+                                        speechView.setImageResource(android.R.drawable.ic_media_pause);
+                                        reproduceAudio(speech64);
+                                    } else {
+                                        mediaPlayer.stop();
+                                        mediaPlayer.release();
+                                        speechView.setImageResource(android.R.drawable.ic_media_play);
+                                    }
+                                }
+                            }
+                        });
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        Toast.makeText(getActivity(),
+                                getResources().getString(R.string.reproCanceled), Toast.LENGTH_SHORT)
+                                .show();
+                        break;
+                }
+            }
+        };
+
         speechView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                      .build();
-                RequestBody body = RequestBody.create(("{'text': '" + password.getText().toString() + "'}").getBytes());
-                Request request = new Request.Builder()
-                      .url("https://europe-west2-sylvan-triumph-314611.cloudfunctions.net/text2Speech")
-                      .addHeader("Content-Type", "application/json")
-                      .method("POST", body)
-                      .build();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.sureReproQuestion).setPositiveButton(R.string.yes, dialogClickListener)
+                        .setNegativeButton(R.string.no, dialogClickListener).show();
 
-
-                client.newCall(request).enqueue(new Callback() {
-                  @Override
-                  public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                      e.printStackTrace();
-                  }
-
-                  @Override
-                  public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                      if (response.isSuccessful()) {
-                          String speech64 = response.body().string();
-                          mediaPlayer = new MediaPlayer();
-                          if (!mediaPlayer.isPlaying()) {
-                              speechView.setImageResource(android.R.drawable.ic_media_pause);
-                              reproduceAudio(speech64);
-                          } else {
-                              mediaPlayer.stop();
-                              mediaPlayer.release();
-                              speechView.setImageResource(android.R.drawable.ic_media_play);
-                          }
-                      }
-                  }
-                    });
-                }
-            });
+            }
+        });
 
         copyClipView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +209,7 @@ public class PassDetailsFragment extends Fragment {
                 }).start();
             }
         });
+
     }
 
     public void reproduceAudio(String speech64) {

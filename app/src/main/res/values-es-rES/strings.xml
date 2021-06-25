@@ -32,4 +32,8 @@
     <string name="authError">"Error de autenticación: "</string>
     <string name="login">Iniciar sessión</string>
     <string name="cancel">Cancelar</string>
+    <string name="sureReproQuestion">La contraseña sera reproducida en audio.  Esta seguro de querer continuar?</string>
+    <string name="no">No</string>
+    <string name="yes">Si</string>
+    <string name="reproCanceled">Reproducción cancelada</string>
 </resources>

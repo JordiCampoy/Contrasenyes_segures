@@ -40,4 +40,8 @@
     <string name="authError">Authentication error:</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="reproCanceled">Playback canceled</string>
+    <string name="sureReproQuestion">The password will be played on audio. Are you sure?</string>
 </resources>
